@@ -1,0 +1,41 @@
+/* ===== Abertura: só existe quando html.intro-on (definido no <head>) ===== */
+#intro{display:none}
+html.intro-on #intro,#intro.out{display:grid}
+html.intro-on{overflow:hidden}
+#intro{position:fixed;inset:0;z-index:200;place-items:center;
+  background:
+    radial-gradient(circle at 12% 90%,rgba(196,135,144,.28),transparent 30%),
+    radial-gradient(circle at 92% 10%,rgba(212,170,134,.32),transparent 28%),
+    radial-gradient(ellipse at 50% 40%,#FFF7F0 0%,#F6E4DC 55%,#EBCFC4 100%);
+  transition:opacity .9s ease,visibility 0s .9s}
+#intro svg{width:min(88vw,520px);height:auto;overflow:visible;transition:transform 1s ease,opacity .6s ease}
+#intro.out{opacity:0;visibility:hidden;pointer-events:none}
+#intro.out svg{transform:scale(1.05);opacity:0}
+
+/* símbolo: traçado à mão (stroke-dashoffset) */
+#intro .s{fill:none;stroke:url(#ig);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 2;stroke-dashoffset:1.01}
+#intro.go .s{animation:i-draw 1.2s cubic-bezier(.55,0,.25,1) forwards;animation-delay:var(--t,0s)}
+@keyframes i-draw{to{stroke-dashoffset:0}}
+
+/* nome: cada letra é contornada e depois preenchida, da esquerda para a direita */
+#intro .nm{font-family:Italiana,Georgia,serif;font-size:52px;letter-spacing:2px}
+#intro .nm tspan{fill:#8F4F5B;fill-opacity:0;stroke:#B87582;stroke-width:.9;stroke-dasharray:400;stroke-dashoffset:400}
+#intro.go .nm tspan{animation:i-write .7s ease forwards,i-fill .5s ease forwards;
+  animation-delay:calc(1.85s + var(--i) * .045s),calc(2.2s + var(--i) * .045s)}
+@keyframes i-write{to{stroke-dashoffset:0}}
+@keyframes i-fill{to{fill-opacity:1;stroke-opacity:0}}
+
+#intro .ul{fill:none;stroke:url(#ig2);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:1 2;stroke-dashoffset:1.01}
+#intro.go .ul{animation:i-draw .7s ease 2.9s forwards}
+#intro .tag{font-family:Jost,system-ui,sans-serif;font-weight:300;font-size:17px;letter-spacing:3px;fill:#7B6368;opacity:0}
+#intro.go .tag{animation:i-fade .6s ease 3.2s forwards}
+@keyframes i-fade{to{opacity:1}}
+
+.intro-skip{position:absolute;bottom:max(1.6rem,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);min-height:44px;padding:.4rem 1.4rem;background:none;border:0;color:#7B6368;font:300 .9rem Jost,system-ui,sans-serif;letter-spacing:.06em;cursor:pointer;opacity:.75}
+.intro-skip:hover{opacity:1}
+
+/* enquanto a abertura roda, o topo do site espera para entrar depois dela */
+html.intro-on .hero-copy.reveal{opacity:0!important;transform:translateY(28px)!important;transition:none!important}
+html.intro-on .hero-photo .ph-frame img{transform:scale(1.18)!important;transition:none!important}
+
+@media (prefers-reduced-motion:reduce){#intro{display:none!important}html.intro-on{overflow:auto}}
